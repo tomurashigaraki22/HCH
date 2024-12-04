@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.slot-game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.slot-machine {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.slots {
+  display: flex;
+  justify-content: space-around;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.slot {
+  padding: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.start-button, .pay-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.start-button:hover, .pay-button:hover {
+  background-color: #45a049;
+}
+
+.account-popup {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+  text-align: left;
+}

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Home, Gift, User, HelpCircle, Users, FireExtinguisher, Computer, Blocks } from 'lucide-react';
-import { FaFire } from "react-icons/fa"; // Fire
+import { FaFire, FaUserCircle } from "react-icons/fa"; // Fire
 import { GiFishingPole } from "react-icons/gi"; // Slot & Fishing
 import { BASE_URL } from '../config';
 import jwt_decode from 'jwt-decode'
+import SlotGame from './components/SlotGame';
 
 const HCHBetClone = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
@@ -149,6 +150,7 @@ const HCHBetClone = () => {
         localStorage.setItem("token", resp2.token)
         settoken(resp2.token)
         const decodedToken = await jwt_decode(resp2.token)
+        setemail(decodedToken.email)
         const balancess = decodedToken.balance
         setBalance(balancess)
       }else{
@@ -185,6 +187,7 @@ const HCHBetClone = () => {
         localStorage.setItem("token", resp2.token)
         settoken(resp2.token)
         const decodedToken = await jwt_decode(resp2.token)
+        setemail(decodedToken.email)
         const balancess = decodedToken.balance
         setBalance(balancess)
       }
@@ -202,6 +205,7 @@ const HCHBetClone = () => {
           setSuccess(true)
           const decoded = await jwt_decode(token)
           console.log("Decoded: ", decoded)
+          setemail(decoded.email)
           setBalance(decoded.balance)
         }
       } catch (error) {
@@ -250,6 +254,18 @@ const HCHBetClone = () => {
       console.log("Operation failed:", error);
     }
   };
+  const [gameStarts, setGameStarts] = useState(false)
+
+  const [agentClicked, setAgentClicked] = useState(false);
+
+  // Function to handle the action when the user clicks the button
+  const handleAgentClick = () => {
+    setAgentClicked(!agentClicked); // This will trigger the popup
+  };
+
+  // WhatsApp link (you can replace the number if needed)
+  const whatsappLink = "https://wa.me/2349110520620?text=Hello%20Agent,%20I%20need%20assistance.";
+
   
 
   // Open deposit popup for selected game
@@ -266,6 +282,7 @@ const HCHBetClone = () => {
       console.error("Game data is missing or incomplete:", game);
     }
   };
+  const [isOpen, setisOpen] = useState(false)
   
 
   // Close deposit popup
@@ -290,6 +307,24 @@ const logout = async () => {
   localStorage.clear()
   window.location.reload()
 }
+
+
+
+const canAccessProfile = balance > 1000 && email;
+
+const handleDeposit = () => {
+  console.log("Attempting to deposit credits: ", depositAmount)
+  if (balance >= depositAmount) {
+    console.log("W")
+    setBalance(balance - depositAmount); // Subtract deposit amount from balance
+    closeDepositPopup(); // Close the deposit popup
+    setGameStarts(true); // Start the game
+    console.log(`Game started with ${depositAmount} credits!`);
+  } else {
+    toggleDepositPopup()
+    console.log("Insufficient balance to deposit!");
+  }
+};
 
   return (
     <div className="bg-green-800 min-h-screen text-white font-sans">
@@ -334,6 +369,10 @@ const logout = async () => {
         </div>
       </div>
 
+      {gameStarts && <SlotGame/>}
+
+      
+
       <div className='flex flex-row items-center justify-between p-5'>
         <div className='hover:cursor-pointer flex flex-col items-center justify-center space-y-1 hover:scale-110 transform transition duration-300 hover:text-red-500'>
           <FaFire color='red' size={30} />
@@ -372,7 +411,7 @@ const logout = async () => {
             onClick={() => {
               // Log the game details when clicked
               console.log("Game Deets: ", game); 
-              setSelectedGame({
+               setSelectedGame({
                 name: game.name,
                 image: game.image,
                 amount: game.amount
@@ -380,6 +419,7 @@ const logout = async () => {
               
               // Set the deposit amount (assuming `setDepositAmount` is defined)
               setDepositAmount(game.amount);
+              
             }}
           >
             <img
@@ -410,8 +450,8 @@ const logout = async () => {
   </button>
 
   {/* Agent Button - Grey */}
-  <button className="text-gray-400 flex flex-col items-center">
-    <Users size={24} color='gray' />
+  <button className="text-white flex flex-col items-center" onClick={() => setAgentClicked(true)}>
+    <Users size={24} color='white' />
     <span>Agent</span>
   </button>
 
@@ -422,10 +462,17 @@ const logout = async () => {
   </button>
 
   {/* Profile Button - Grey */}
-  <button className="text-gray-400 flex flex-col items-center">
-    <User size={24} color='gray' />
-    <span>Profile</span>
-  </button>
+  {success ? (
+    <button className="text-white flex flex-col items-center" onClick={() => setisOpen(true)}>
+      <User size={24} color='white' />
+      <span>Profile</span>
+    </button>
+  ) : (
+    <button className="text-gray-400 flex flex-col items-center" onClick={() => setisOpen(true)}>
+      <User size={24} color='gray' />
+      <span>Profile</span>
+    </button>
+  )}
 </footer>
 
 
@@ -436,12 +483,36 @@ const logout = async () => {
             <div className="flex justify-between items-center flex-row mb-2">
               <h2 className="text-xl font-bold mb-0">{selectedGame.name}</h2>
               <button className="text-red-500" onClick={() => {
-                console.log("SelecteD Game: ", selectedGame)
                 closeDepositPopup()
               }}>X</button>
             </div>
             <p className="mb-4">To play {selectedGame.name}, please deposit {depositAmount} credits.</p>
-            <button className="w-full bg-green-500 text-white p-2 rounded-md" onClick={toggleDepositPopup}>Deposit</button>
+            <button className="w-full bg-green-500 text-white p-2 rounded-md" onClick={handleDeposit}>Deposit</button>
+          </div>
+        </div>
+      )}
+
+{agentClicked && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-65">
+          <div className="bg-white p-6 rounded-md text-black w-80">
+            <div className="flex justify-between items-center flex-row mb-4">
+              <h2 className="text-xl font-bold">Chat with an Agent?</h2>
+              <button 
+                onClick={handleAgentClick} 
+                className="text-red-500"
+              >
+                X
+              </button>
+            </div>
+            <p className="mb-4">Send a direct message to an agent on WhatsApp:</p>
+            <a 
+              href={whatsappLink} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="block w-full bg-green-500 text-white p-2 rounded-md text-center"
+            >
+              Send DM on WhatsApp
+            </a>
           </div>
         </div>
       )}
@@ -533,6 +604,80 @@ const logout = async () => {
     </div>
   </div>
 )}
+
+{isOpen && success && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-8 rounded-lg shadow-lg w-96 max-w-full">
+      <div className="flex items-center justify-between space-x-4">
+        <div className="flex items-center space-x-4">
+          <FaUserCircle size={50} color="gray" />
+          <div>
+            <p className="text-2xl font-semibold text-blue-800">{email.split("@")[0]}</p>
+            <p className="text-md text-gray-600">{email}</p>
+            <p className="text-sm text-yellow-400">Balance: NGN {balance}</p>
+          </div>
+        </div>
+        <button
+          className="text-gray-600 text-xl"
+          onClick={() => setisOpen(false)}
+        >
+          X
+        </button>
+      </div>
+
+      <div className="mt-6 space-y-4">
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm font-medium text-gray-600">Full Name</label>
+          <input
+            type="text"
+            value={email.split("@")[0]}
+            readOnly
+            className="bg-gray-100 text-gray-800 p-2 rounded-md border border-gray-300"
+          />
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm font-medium text-gray-600">Email</label>
+          <input
+            type="email"
+            value={email}
+            readOnly
+            className="bg-gray-100 text-gray-800 p-2 rounded-md border border-gray-300"
+          />
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label className="text-sm font-medium text-gray-600">Balance</label>
+          <input
+            type="text"
+            value={`NGN ${balance}`}
+            readOnly
+            className="bg-gray-100 text-gray-800 p-2 rounded-md border border-gray-300"
+          />
+        </div>
+      </div>
+
+      <div className="mt-6 space-y-3">
+        <button
+          onClick={() => alert("Edit Profile")}
+          className="w-full bg-yellow-400 text-black p-2 rounded-md hover:bg-yellow-500 transition duration-200"
+          disabled={!canAccessProfile}
+        >
+          Edit Profile
+        </button>
+        <button
+          onClick={() => alert("View Transactions")}
+          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-200"
+          disabled={!canAccessProfile}
+        >
+          View Transactions
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
 {isRegisterOpen && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
