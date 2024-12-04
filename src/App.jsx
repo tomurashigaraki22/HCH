@@ -285,6 +285,12 @@ const toggleDepositPopup = () => {
   setDepositPopupOpen((prev) => !prev);
 };
 
+const logout = async () => {
+  setSuccess(false)
+  localStorage.clear()
+  window.location.reload()
+}
+
   return (
     <div className="bg-green-800 min-h-screen text-white font-sans">
       <header className="bg-green-900 p-4 flex justify-between items-center">
@@ -310,6 +316,13 @@ const toggleDepositPopup = () => {
             </>
           )}
         </div>
+        {
+          success && (
+            <div>
+          <p className='text-green-500 font-bold cursor-pointer hover:text-white' onClick={logout}>Logout</p>
+        </div>
+          )
+        }
       </header>
 
       {/* Horizontal Scroller */}
@@ -372,7 +385,7 @@ const toggleDepositPopup = () => {
             <img
               src={game.image}
               alt={`${game.name} thumbnail`} // Correctly use game.name here
-              className="w-full h-32 object-cover rounded-md"
+              className="w-full h-32 object-contain rounded-md"
             />
             <p className="text-center font-semibold text-sm">{game.name}</p>
           </div>
@@ -384,27 +397,37 @@ const toggleDepositPopup = () => {
 
       {/* Footer Navigation */}
       <footer className="bg-green-900 p-2 fixed bottom-0 w-full flex justify-around text-center">
-        <button className="text-white flex flex-col items-center">
-          <Home size={24} />
-          <span>Home</span>
-        </button>
-        <button className="text-white flex flex-col items-center">
-          <Gift size={24} />
-          <span>Offers</span>
-        </button>
-        <button className="text-white flex flex-col items-center">
-          <Users size={24} />
-          <span>Agent</span>
-        </button>
-        <button className="text-white flex flex-col items-center">
-          <HelpCircle size={24} />
-          <span>Support</span>
-        </button>
-        <button className="text-white flex flex-col items-center">
-          <User size={24} />
-          <span>Profile</span>
-        </button>
-      </footer>
+  {/* Home Button - Active Style */}
+  <button className="text-white flex flex-col items-center">
+    <Home size={24} />
+    <span>Home</span>
+  </button>
+
+  {/* Offers Button - Grey */}
+  <button className="text-gray-400 flex flex-col items-center">
+    <Gift size={24} color='gray' />
+    <span>Offers</span>
+  </button>
+
+  {/* Agent Button - Grey */}
+  <button className="text-gray-400 flex flex-col items-center">
+    <Users size={24} color='gray' />
+    <span>Agent</span>
+  </button>
+
+  {/* Support Button - Grey */}
+  <button className="text-gray-400 flex flex-col items-center">
+    <HelpCircle size={24} color='gray' />
+    <span>Support</span>
+  </button>
+
+  {/* Profile Button - Grey */}
+  <button className="text-gray-400 flex flex-col items-center">
+    <User size={24} color='gray' />
+    <span>Profile</span>
+  </button>
+</footer>
+
 
       {/* Deposit Popup */}
       {selectedGame && depositAmount && (
@@ -528,6 +551,8 @@ const toggleDepositPopup = () => {
             type="email"
             className="w-full px-3 py-2 border rounded-md focus:outline-none"
             required
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
           />
         </div>
         <div className="mb-4">
@@ -536,6 +561,8 @@ const toggleDepositPopup = () => {
             type="password"
             className="w-full px-3 py-2 border rounded-md focus:outline-none"
             required
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
           />
         </div>
         <button
