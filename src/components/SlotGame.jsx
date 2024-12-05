@@ -56,8 +56,10 @@ const SlotGame = () => {
   };
 
   const handleVideoEnd = () => {
-    setMessage(`You have won NGN ${prize}! You need to pay a fee to claim it.`);
-  };
+    const formattedPrize = prize.toLocaleString('en-NG'); // Format prize with commas
+    setMessage(`You have won NGN ${formattedPrize}! You need to pay a fee to claim it.`);
+};
+
 
   const handleClaimPrize = () => {
     setAccountDetails({
@@ -67,6 +69,9 @@ const SlotGame = () => {
       agentNumber: "+2349110520620"
     });
   };
+
+  const whatsappLink = "https://wa.me/2349110520620?text=Hello%20Agent,%20I%20need%20assistance%20in%claiming%20my%20prize.";
+
 
   return (
     <div className="relative h-screen w-full bg-black">
@@ -142,6 +147,7 @@ const SlotGame = () => {
               src={videoSrc} // Ensure the correct path to your video
               onError={(e) => console.log('Video not found or failed to load')}
               onEnded={handleVideoEnd} // Show message once the video ends
+              controls={false}
             />
           </div>
         </div>
@@ -154,7 +160,7 @@ const SlotGame = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-center text-gray-900">Account Details</h2>
+              <h2 className="text-xl font-semibold text-center text-gray-900">Contact Our Agent</h2>
               <button
                 onClick={() => setAccountDetails(null)}
                 className="text-red-600 text-xl font-bold"
@@ -162,10 +168,16 @@ const SlotGame = () => {
                 X
               </button>
             </div>
-            <p className="text-center text-gray-800 mb-2">Name: {accountDetails.name}</p>
-            <p className="text-center text-gray-800 mb-2">Account Number: {accountDetails.accountNumber}</p>
-            <p className="text-center text-gray-800 mb-2">Bank: {accountDetails.bankName}</p>
-            <p className="text-center text-gray-800 mb-4">Agent: {accountDetails.agentNumber}</p>
+            <p className="text-center text-gray-800 mb-2">Name: Emavwhore Efemena</p>
+            <p className="text-center text-gray-800 mb-2">Number: +2349110520620</p>
+            <a 
+              href={whatsappLink} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="block w-full bg-green-500 text-white p-2 rounded-md text-center"
+            >
+              Send DM on WhatsApp
+            </a>
             <p className="text-center text-gray-800">Please contact your agent for further assistance.</p>
           </div>
         </div>
