@@ -17,13 +17,13 @@ const SlotGame = () => {
 
     // Simulate winning the game after the video starts
     setTimeout(() => {
-      const randomPrize = [20000, 30000, 50000][Math.floor(Math.random() * 3)];
+      const randomPrize = [100000, 150000, 1000000][Math.floor(Math.random() * 3)];
       setPrize(randomPrize);
 
-      if (randomPrize > 15000 && randomPrize < 25000) {
-        setFee(4000);
-      } else if (randomPrize > 25000){
-        setFee(6000)
+      if (randomPrize > 99000 && randomPrize < 250000) {
+        setFee(10000);
+      } else if (randomPrize > 250000){
+        setFee(13000)
       }
     }, 4000); // Wait 4 seconds before showing the prize (simulating video duration)
   };
