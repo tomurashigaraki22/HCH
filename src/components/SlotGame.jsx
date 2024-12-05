@@ -84,7 +84,7 @@ const SlotGame = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Slot Game</h2>
+              <h2 className="text-2xl font-bold text-black">Slot Game</h2>
               <button onClick={closePopup} className="text-xl text-red-600">
                 X
               </button>
@@ -129,7 +129,7 @@ const SlotGame = () => {
             className="relative w-[100%] h-[100%] bg-black border-black" // Ensures proper sizing
             onClick={(e) => e.stopPropagation()}
           >
-            {message !== "" && <p className="text-center p-3">{message}</p>}
+            {message !== "" && <p className="text-center p-3">{message} Fee: {fee}</p>}
             {message !== "" && <p className="text-black font-bold bg-yellow-400 px-3 text-center py-2 w-40 self-center items-center rounded-lg cursor-pointer hover:bg-black hover:text-white transition ease duration-300" style={{
                 alignSelf: 'center',
                 justifySelf: 'center'
