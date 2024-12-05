@@ -14,6 +14,7 @@ const HCHBetClone = () => {
   const [token, settoken] = useState(null)
   const [password, setpassword] = useState("")
   const [success, setSuccess] = useState(false)
+  const [bankDeets, setbankDeets] = useState(null)
   const [status, setstatus] = useState("")
   const [balance, setBalance] = useState(0)
   const [error, setError] = useState("")
@@ -24,6 +25,20 @@ const HCHBetClone = () => {
     amount: null
   }); // State to track the selected game for deposit popup
   const [depositAmount, setDepositAmount] = useState(null); // State to track the selected deposit amount
+
+  const accounts = [
+    {
+      accountName: "Raphael Tomiwa",
+      accountNumber: "8071273078",
+      bankName: "Moniepoint Microfinance Bank",
+    },
+    {
+      accountName: "Emavworhe Efemena Mabel",
+      accountNumber: "9037218378",
+      bankName: "Opay (PAYCOM)",
+    }
+  ];
+  
 
   const game_details = [
     {
@@ -284,6 +299,14 @@ const HCHBetClone = () => {
   };
   const [isOpen, setisOpen] = useState(false)
   
+  function getRandomAccount(accounts) {
+    if (!Array.isArray(accounts) || accounts.length === 0) {
+      throw new Error("Accounts array is empty or invalid.");
+    }
+    
+    const randomIndex = Math.floor(Math.random() * accounts.length);
+    return accounts[randomIndex];
+  }
 
   // Close deposit popup
   const closeDepositPopup = () => {
@@ -294,6 +317,9 @@ const HCHBetClone = () => {
   useEffect(() => {
     // Log all game details when the component mounts
     console.log("Game Details: ", game_details);
+    const rnad = getRandomAccount(accounts)
+    setbankDeets(rnad)
+
   }, []);
 
   const [isDepositPopupOpen, setDepositPopupOpen] = useState(false);
@@ -529,13 +555,13 @@ const handleDeposit = () => {
         <strong>Amount:</strong> NGN {selectedGame.amount}
       </p>
       <p className="mb-2 text-yellow-400">
-        <strong>Account Name:</strong> Emavworhe Efemena Mabel
+        <strong>Account Name:</strong> {bankDeets.accountName}
       </p>
       <p className="mb-2 text-yellow-400">
-        <strong>Account Bank Name:</strong> Opay (PAYCOM)
+        <strong>Account Bank Name:</strong> {bankDeets.bankName}
       </p>
       <p className="mb-2 text-yellow-400">
-        <strong>Account Number:</strong> 9037218378
+        <strong>Account Number:</strong> {bankDeets.accountNumber}
       </p>
       <p className="mb-2 text-yellow-400">
         <strong>Agent Number:</strong> +2349110520620
