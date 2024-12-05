@@ -59,9 +59,9 @@ const SlotGame = () => {
 
   const handleClaimPrize = () => {
     setAccountDetails({
-      name: "Emavworhe Efemena Mabel",
-      accountNumber: "9037218378",
-      bankName: "Opay (PAYCOM)",
+      name: "Raphael Tomiwa Jesse",
+      accountNumber: "8071273078",
+      bankName: "Moniepoint Microfinance Bank",
       agentNumber: "+2349110520620"
     });
   };
