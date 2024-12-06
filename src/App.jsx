@@ -28,11 +28,6 @@ const HCHBetClone = () => {
 
   const accounts = [
     {
-      accountName: "Raphael Tomiwa",
-      accountNumber: "8071273078",
-      bankName: "Moniepoint Microfinance Bank",
-    },
-    {
       accountName: "Emavworhe Efemena Mabel",
       accountNumber: "9037218378",
       bankName: "Opay (PAYCOM)",
